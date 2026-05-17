@@ -1,116 +1,947 @@
-
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Website Under Construction</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ourchieve - Premium Lifestyle Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: { 900: '#06080D', 800: '#0C0F16', 700: '#131820', 600: '#1A2030', 500: '#212840' },
+                        accent: { DEFAULT: '#3B82F6', dark: '#2563EB', light: '#60A5FA', glow: '#1D4ED8' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <style>
-        body {
-            background-color: #f5f5f5;
-            margin-top: 8%;
-            color: #5d5d5d;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
-                "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-                "Noto Color Emoji";
-            text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.75);
-            text-align: center;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #06080D; color: #fff; min-height: 100vh; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #06080D; }
+        ::-webkit-scrollbar-thumb { background: #1A2030; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3B82F6; }
 
-        h1 {
-            font-size: 2.45em;
-            font-weight: 700;
-            color: #5d5d5d;
-            letter-spacing: -0.02em;
-            margin-bottom: 30px;
-            margin-top: 30px;
-        }
+        .glass { background: rgba(12,15,22,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        .glow-border { border: 1px solid rgba(59,130,246,0.12); transition: all 0.3s ease; }
+        .glow-border:hover { border-color: rgba(59,130,246,0.4); box-shadow: 0 0 30px rgba(59,130,246,0.06); }
 
-        .container {
-            width: 100%;
-            margin-right: auto;
-            margin-left: auto;
-        }
+        .btn-primary { background: #3B82F6; color: #fff; font-weight: 700; transition: all 0.3s ease; }
+        .btn-primary:hover { background: #60A5FA; box-shadow: 0 0 30px rgba(59,130,246,0.35); transform: translateY(-1px); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 
-        .animate__animated {
-            animation-duration: 1s;
-            animation-fill-mode: both;
-        }
+        .btn-outline { border: 1px solid rgba(255,255,255,0.15); color: #fff; transition: all 0.3s ease; }
+        .btn-outline:hover { border-color: #3B82F6; color: #3B82F6; }
 
-        .animate__fadeIn {
-            animation-name: fadeIn;
-        }
+        .product-img { transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .product-card:hover .product-img { transform: scale(1.05); }
 
-        .info {
-            color: #5594cf;
-            fill: #5594cf;
-        }
+        .slide-in { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .slide-in.open { transform: translateX(0); }
 
-        .error {
-            color: #c92127;
-            fill: #c92127;
-        }
+        .text-gradient { background: linear-gradient(135deg, #fff 0%, #3B82F6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 
-        .warning {
-            color: #ffcc33;
-            fill: #ffcc33;
-        }
+        .hero-gradient { background: radial-gradient(ellipse at 20% 50%, rgba(59,130,246,0.1) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(99,102,241,0.06) 0%, transparent 50%); }
 
-        .success {
-            color: #5aba47;
-            fill: #5aba47;
-        }
+        .card-shine { position: relative; overflow: hidden; }
+        .card-shine::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(59,130,246,0.04) 0%, transparent 60%); opacity: 0; transition: opacity 0.5s; pointer-events: none; z-index: 1; }
+        .card-shine:hover::before { opacity: 1; }
 
-        .icon-large {
-            height: 132px;
-            width: 132px;
-        }
+        @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .loading-dot { animation: pulse-dot 1.4s ease-in-out infinite; }
+        .loading-dot:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dot:nth-child(3) { animation-delay: 0.4s; }
 
-        .description-text {
-            color: #707070;
-            letter-spacing: -0.01em;
-            font-size: 1.25em;
-            line-height: 20px;
-        }
+        @keyframes slide-announce { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .announce-slide { animation: slide-announce 25s linear infinite; }
 
-        .footer {
-            margin-top: 40px;
-            font-size: 0.7em;
-        }
+        .qty-btn { transition: all 0.15s; }
+        .qty-btn:active { transform: scale(0.9); }
 
-        .animate__delay-1s {
-            animation-delay: 1s;
-        }
+        .page-enter { animation: fadeUp 0.4s ease forwards; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
+        .skeleton { background: linear-gradient(90deg, #131820 25%, #1A2030 50%, #131820 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-            to {
-                opacity: 1;
-            }
-        }
+        #toast { transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
     </style>
 </head>
+<body class="antialiased">
 
-<body>
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="animate__animated animate__fadeIn">
-                    <img style="width:10rem;" src="data:image/png;base64,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">
-                </div>
-                <h1 class="animate__animated animate__fadeIn">Website Under Construction</h1>
-                <div class="description-text animate__animated animate__fadeIn animate__delay-1s">
-                    <p>Website Coming soon</p>
-                    <section class="footer"><strong>Powered By vmTECH</strong></section>
-                </div>
-            </div>
+    <!-- Announcement Bar -->
+    <div class="bg-accent text-white text-xs font-semibold py-2 overflow-hidden">
+        <div class="announce-slide whitespace-nowrap">
+            FREE SHIPPING ON ORDERS OVER R750 &nbsp;&bull;&nbsp; NEW ARRIVALS DROPPING WEEKLY &nbsp;&bull;&nbsp; USE CODE "OURCHIEVE10" FOR 10% OFF &nbsp;&bull;&nbsp; PREMIUM QUALITY GUARANTEED &nbsp;&bull;&nbsp; FREE SHIPPING ON ORDERS OVER R750
         </div>
     </div>
 
+    <!-- Header -->
+    <header class="sticky top-0 z-50 glass border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="#" class="text-2xl font-black tracking-tighter">
+                    <span class="text-white">OUR</span><span class="text-accent">CHIEVE</span>
+                </a>
+
+                <nav class="hidden md:flex items-center gap-8">
+                    <a href="#shop" class="text-sm font-medium text-gray-300 hover:text-accent transition-colors">Shop</a>
+                    <a href="#about" class="text-sm font-medium text-gray-300 hover:text-accent transition-colors">About</a>
+                    <a href="#contact" class="text-sm font-medium text-gray-300 hover:text-accent transition-colors">Contact</a>
+                </nav>
+
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleSearch()" class="p-2.5 text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-dark-600">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                    <button onclick="navigate('cart')" class="relative p-2.5 text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-dark-600">
+                        <i class="fa-solid fa-bag-shopping text-lg"></i>
+                        <span id="cart-badge" class="absolute -top-0.5 -right-0.5 bg-accent text-white text-[10px] font-bold w-5 h-5 rounded-full items-center justify-center hidden">0</span>
+                    </button>
+                    <button onclick="toggleMobileMenu()" class="md:hidden p-2.5 text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-dark-600">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search -->
+        <div id="search-bar" class="hidden border-t border-white/5 bg-dark-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                    <input type="text" id="search-input" onkeyup="handleSearch(event)" placeholder="Search products..." class="w-full bg-dark-700 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 transition-colors">
+                </div>
+                <div id="search-results" class="mt-3 hidden"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/80" onclick="toggleMobileMenu()"></div>
+        <div class="absolute top-0 right-0 w-72 h-full bg-dark-800 border-l border-white/5 p-6">
+            <div class="flex justify-end mb-8">
+                <button onclick="toggleMobileMenu()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <nav class="flex flex-col gap-6">
+                <a href="#shop" onclick="toggleMobileMenu()" class="text-lg font-medium text-gray-300 hover:text-accent transition-colors">Shop</a>
+                <a href="#about" onclick="toggleMobileMenu()" class="text-lg font-medium text-gray-300 hover:text-accent transition-colors">About</a>
+                <a href="#contact" onclick="toggleMobileMenu()" class="text-lg font-medium text-gray-300 hover:text-accent transition-colors">Contact</a>
+                <a href="#cart" onclick="toggleMobileMenu()" class="text-lg font-medium text-gray-300 hover:text-accent transition-colors">Cart</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="app"></div>
+
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 z-[90] translate-y-20 opacity-0 pointer-events-none">
+        <div class="bg-dark-700 border border-accent/30 rounded-xl px-5 py-3.5 flex items-center gap-3 shadow-2xl">
+            <i class="fa-solid fa-check-circle text-accent"></i>
+            <span id="toast-msg" class="text-sm text-white font-medium">Done</span>
+        </div>
+    </div>
+
+    <script>
+    // ========================================
+    // CONFIGURATION - Update these values
+    // ========================================
+    const CONFIG = {
+        // API base URL (your store-access endpoint)
+        API_BASE: 'http://demo-embedded.varsitymarket.tech/store-access',
+        // Store ID from the admin panel
+        STORE_ID: '5',
+        // API Key generated from Developer Settings
+        API_KEY: 'vm_live_6a3251c5acf6b130617899dbeaee9329259bec937181fbc4',
+        // Store display info
+        STORE_NAME: 'Ourchieve',
+        CURRENCY: 'R',
+        FREE_SHIPPING_THRESHOLD: 2000,
+        SHIPPING_COST: 149
+    };
+
+    // ========================================
+    // STATE
+    // ========================================
+    let state = {
+        products: [],
+        categories: [],
+        cart: { cart_id: null, items: [], item_count: 0, subtotal: 0 },
+        currentProduct: null,
+        loading: false,
+        storeInfo: null
+    };
+
+    // ========================================
+    // API CLIENT
+    // ========================================
+    const api = {
+        baseUrl() {
+            return `${CONFIG.API_BASE}/${CONFIG.STORE_ID}/`;
+        },
+
+        headers() {
+            return { 'Content-Type': 'application/json', 'X-API-Key': CONFIG.API_KEY };
+        },
+
+        async get(endpoint, params = {}) {
+            const url = new URL(this.baseUrl(), window.location.origin);
+            url.searchParams.set('state', endpoint);
+            Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
+            const res = await fetch(url.toString(), { headers: { 'X-API-Key': CONFIG.API_KEY } });
+            return res.json();
+        },
+
+        async post(endpoint, body = {}) {
+            const url = new URL(this.baseUrl(), window.location.origin);
+            url.searchParams.set('state', endpoint);
+            url.searchParams.set('api_key', CONFIG.API_KEY);
+            const res = await fetch(url.toString(), {
+                method: 'POST',
+                headers: this.headers(),
+                body: JSON.stringify(body)
+            });
+            return res.json();
+        },
+
+        async getProducts() { return this.get('products', { limit: '50' }); },
+        async getProduct(id) { return this.get('product', { id }); },
+        async getCategories() { return this.get('categories'); },
+        async searchProducts(q) { return this.get('search', { q }); },
+        async getSiteInfo() { return this.get('site'); },
+
+        async createCart() { return this.post('cart_create'); },
+        async getCart(cartId) { return this.get('cart', { cart_id: cartId }); },
+        async addToCart(cartId, productId, quantity = 1) {
+            return this.post('cart_add', { cart_id: cartId, product_id: productId, quantity });
+        },
+        async updateCart(cartId, productId, quantity) {
+            return this.post('cart_update', { cart_id: cartId, product_id: productId, quantity });
+        },
+        async removeFromCart(cartId, productId) {
+            return this.post('cart_remove', { cart_id: cartId, product_id: productId });
+        },
+        async createCheckout(cartId, returnUrl) {
+            return this.post('checkout_create', { cart_id: cartId, return_url: returnUrl });
+        },
+        async completeCheckout(sessionId, customer) {
+            return this.post('checkout_complete', { session_id: sessionId, ...customer });
+        },
+        async placeOrder(orderData) {
+            return this.post('order', orderData);
+        }
+    };
+
+    // ========================================
+    // CART PERSISTENCE (localStorage for cart_id)
+    // ========================================
+    function getCartId() {
+        return localStorage.getItem('ourchieve_cart_id');
+    }
+    function setCartId(id) {
+        localStorage.setItem('ourchieve_cart_id', id);
+    }
+
+    async function ensureCart() {
+        let cartId = getCartId();
+        if (!cartId) {
+            const res = await api.createCart();
+            if (res.success) {
+                cartId = res.data.cart_id;
+                setCartId(cartId);
+            }
+        }
+        state.cart.cart_id = cartId;
+        return cartId;
+    }
+
+    async function refreshCart() {
+        const cartId = await ensureCart();
+        if (!cartId) return;
+        try {
+            const res = await api.getCart(cartId);
+            if (res.success) {
+                state.cart = { cart_id: cartId, ...res.data };
+            } else if (res.error === 'Cart not found') {
+                localStorage.removeItem('ourchieve_cart_id');
+                await ensureCart();
+            }
+        } catch (e) {
+            // Cart might not exist yet, that's ok
+        }
+        updateCartBadge();
+    }
+
+    async function addProductToCart(productId) {
+        const cartId = await ensureCart();
+        const res = await api.addToCart(cartId, productId, 1);
+        if (res.success) {
+            state.cart = { cart_id: cartId, ...res.data };
+            updateCartBadge();
+            showToast('Added to cart');
+        } else {
+            showToast(res.error || 'Failed to add');
+        }
+    }
+
+    async function updateCartItem(productId, quantity) {
+        const cartId = state.cart.cart_id;
+        const res = await api.updateCart(cartId, productId, quantity);
+        if (res.success) {
+            state.cart = { cart_id: cartId, ...res.data };
+            updateCartBadge();
+            renderCurrentRoute();
+        }
+    }
+
+    async function removeCartItem(productId) {
+        const cartId = state.cart.cart_id;
+        const res = await api.removeFromCart(cartId, productId);
+        if (res.success) {
+            state.cart = { cart_id: cartId, ...res.data };
+            updateCartBadge();
+            renderCurrentRoute();
+        }
+    }
+
+    function updateCartBadge() {
+        const badge = document.getElementById('cart-badge');
+        const count = state.cart.item_count || 0;
+        badge.textContent = count;
+        badge.style.display = count > 0 ? 'flex' : 'none';
+    }
+
+    // ========================================
+    // ROUTER
+    // ========================================
+    function getRoute() {
+        const hash = window.location.hash.slice(1) || '';
+        const parts = hash.split('/');
+        return { page: parts[0] || 'home', param: parts[1] || null };
+    }
+
+    function navigate(page, param) {
+        if (param) {
+            window.location.hash = `${page}/${param}`;
+        } else {
+            window.location.hash = page;
+        }
+    }
+
+    async function renderCurrentRoute() {
+        const { page, param } = getRoute();
+        const app = document.getElementById('app');
+
+        switch (page) {
+            case 'home': case '':
+                app.innerHTML = renderHomePage();
+                break;
+            case 'shop':
+                app.innerHTML = renderLoading();
+                await loadProducts();
+                app.innerHTML = renderShopPage();
+                break;
+            case 'product':
+                app.innerHTML = renderLoading();
+                await loadProduct(param);
+                app.innerHTML = renderProductPage();
+                break;
+            case 'cart':
+                await refreshCart();
+                app.innerHTML = renderCartPage();
+                break;
+            case 'checkout':
+                app.innerHTML = renderCheckoutPage();
+                break;
+            case 'about':
+                app.innerHTML = renderAboutPage();
+                break;
+            case 'contact':
+                app.innerHTML = renderContactPage();
+                break;
+            case 'order-complete':
+                app.innerHTML = renderOrderComplete(param);
+                break;
+            default:
+                app.innerHTML = renderHomePage();
+        }
+
+        window.scrollTo(0, 0);
+    }
+
+    window.addEventListener('hashchange', renderCurrentRoute);
+
+    // ========================================
+    // DATA LOADING
+    // ========================================
+    async function loadProducts() {
+        if (state.products.length > 0) return;
+        try {
+            const [prodRes, catRes] = await Promise.all([api.getProducts(), api.getCategories()]);
+            if (prodRes.success) state.products = prodRes.data;
+            if (catRes.success) state.categories = catRes.data;
+        } catch (e) {
+            state.products = [];
+        }
+    }
+
+    async function loadProduct(id) {
+        try {
+            const res = await api.getProduct(id);
+            if (res.success) state.currentProduct = res.data;
+            else state.currentProduct = null;
+        } catch (e) {
+            state.currentProduct = null;
+        }
+    }
+
+    // ========================================
+    // RENDERERS
+    // ========================================
+    function renderLoading() {
+        return `<div class="flex items-center justify-center py-32">
+            <div class="flex gap-2">
+                <div class="w-3 h-3 rounded-full bg-accent loading-dot"></div>
+                <div class="w-3 h-3 rounded-full bg-accent loading-dot"></div>
+                <div class="w-3 h-3 rounded-full bg-accent loading-dot"></div>
+            </div>
+        </div>`;
+    }
+
+    function productImage(product) {
+        if (product.image && product.image.startsWith('http')) return product.image;
+        if (product.image) return product.image;
+        return 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80';
+    }
+
+    function renderHomePage() {
+        return `<div class="page-enter">
+            <!-- Hero -->
+            <section class="relative min-h-[90vh] flex items-center hero-gradient overflow-hidden">
+                <div class="absolute inset-0">
+                    <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&q=80" alt="" class="w-full h-full object-cover opacity-15">
+                </div>
+                <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+                    <div class="max-w-3xl">
+                        <p class="text-accent text-sm font-semibold tracking-widest uppercase mb-4">Premium Lifestyle Store</p>
+                        <h1 class="text-5xl sm:text-6xl lg:text-8xl font-black leading-[0.9] mb-6">
+                            <span class="text-white">DEFINE</span><br>
+                            <span class="text-gradient">YOUR LEGACY</span>
+                        </h1>
+                        <p class="text-lg text-gray-400 max-w-lg mb-8">Premium lifestyle essentials crafted for those who refuse to blend in. Elevate your everyday with Ourchieve.</p>
+                        <div class="flex flex-wrap gap-4">
+                            <a href="#shop" class="btn-primary px-8 py-4 rounded-xl text-sm inline-flex items-center gap-2">SHOP NOW <i class="fa-solid fa-arrow-right"></i></a>
+                            <a href="#about" class="btn-outline px-8 py-4 rounded-xl text-sm inline-flex items-center gap-2">OUR STORY</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute bottom-10 right-10 hidden lg:block">
+                    <div class="glass glow-border rounded-2xl p-6 text-center">
+                        <p class="text-3xl font-black text-accent">500+</p>
+                        <p class="text-xs text-gray-400 mt-1">Happy Customers</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Categories -->
+            <section class="py-20 border-t border-white/5">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-12">
+                        <p class="text-accent text-sm font-semibold tracking-widest uppercase mb-2">Browse</p>
+                        <h2 class="text-3xl sm:text-4xl font-black text-white">Shop By Category</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        <div onclick="navigate('shop')" class="relative group rounded-2xl overflow-hidden h-52 cursor-pointer glow-border">
+                            <img src="https://images.unsplash.com/photo-1556906781-9a412961c28c?w=600&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark-900/90 to-transparent"></div>
+                            <div class="absolute bottom-6 left-6"><p class="text-white font-bold text-lg">Footwear</p></div>
+                        </div>
+                        <div onclick="navigate('shop')" class="relative group rounded-2xl overflow-hidden h-52 cursor-pointer glow-border">
+                            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark-900/90 to-transparent"></div>
+                            <div class="absolute bottom-6 left-6"><p class="text-white font-bold text-lg">Accessories</p></div>
+                        </div>
+                        <div onclick="navigate('shop')" class="relative group rounded-2xl overflow-hidden h-52 cursor-pointer glow-border">
+                            <img src="https://images.unsplash.com/photo-1434389677669-e08b4cead0e2?w=600&q=80" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark-900/90 to-transparent"></div>
+                            <div class="absolute bottom-6 left-6"><p class="text-white font-bold text-lg">Apparel</p></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            ${renderFooter()}
+        </div>`;
+    }
+
+    function renderShopPage() {
+        const productsHTML = state.products.length === 0
+            ? `<div class="col-span-full text-center py-20"><i class="fa-solid fa-box-open text-4xl text-gray-700 mb-4"></i><p class="text-gray-500">No products available yet</p></div>`
+            : state.products.map(p => renderProductCard(p)).join('');
+
+        return `<div class="page-enter">
+            <section class="py-12 sm:py-20">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex items-end justify-between mb-10">
+                        <div>
+                            <p class="text-accent text-sm font-semibold tracking-widest uppercase mb-2">Curated Selection</p>
+                            <h2 class="text-3xl sm:text-4xl font-black text-white">All Products</h2>
+                        </div>
+                        <p class="text-gray-500 text-sm hidden sm:block">${state.products.length} products</p>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">${productsHTML}</div>
+                </div>
+            </section>
+            ${renderFooter()}
+        </div>`;
+    }
+
+    function renderProductCard(p) {
+        return `<div class="product-card card-shine glow-border rounded-2xl overflow-hidden bg-dark-800 cursor-pointer group" onclick="navigate('product','${p.id}')">
+            <div class="relative overflow-hidden bg-dark-700 h-64 flex items-center justify-center p-4">
+                <img src="${productImage(p)}" alt="${esc(p.name)}" class="product-img w-full h-full object-contain">
+                ${p.category_name ? `<span class="absolute top-3 left-3 bg-dark-900/80 backdrop-blur-sm text-xs text-gray-300 px-3 py-1 rounded-full">${esc(p.category_name)}</span>` : ''}
+            </div>
+            <div class="p-5">
+                <h3 class="text-white font-bold text-sm mb-1 group-hover:text-accent transition-colors truncate">${esc(p.name)}</h3>
+                <p class="text-gray-500 text-xs mb-3 line-clamp-1">${esc(p.description || '')}</p>
+                <div class="flex items-center justify-between">
+                    <p class="text-accent font-bold text-lg">${CONFIG.CURRENCY}${Number(p.price).toLocaleString()}</p>
+                    <button onclick="event.stopPropagation(); addProductToCart(${p.id})" class="btn-primary px-4 py-2 rounded-lg text-xs flex items-center gap-1.5"><i class="fa-solid fa-plus"></i> Add</button>
+                </div>
+            </div>
+        </div>`;
+    }
+
+    function renderProductPage() {
+        const p = state.currentProduct;
+        if (!p) return `<div class="text-center py-32"><i class="fa-solid fa-exclamation-circle text-4xl text-gray-600 mb-4"></i><p class="text-gray-400">Product not found</p><a href="#shop" class="text-accent text-sm mt-4 inline-block hover:underline">Back to Shop</a></div>`;
+
+        return `<div class="page-enter">
+            <section class="py-12 sm:py-20">
+                <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <a href="#shop" class="inline-flex items-center gap-2 text-gray-400 hover:text-accent transition-colors text-sm mb-8">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Shop
+                    </a>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        <!-- Image -->
+                        <div class="bg-dark-800 rounded-2xl border border-white/5 p-8 flex items-center justify-center min-h-[400px]">
+                            <img src="${productImage(p)}" alt="${esc(p.name)}" class="max-w-full max-h-[400px] object-contain">
+                        </div>
+                        <!-- Details -->
+                        <div class="flex flex-col justify-center">
+                            ${p.category_name ? `<p class="text-accent text-xs font-semibold uppercase tracking-widest mb-3">${esc(p.category_name)}</p>` : ''}
+                            <h1 class="text-3xl sm:text-4xl font-black text-white mb-3">${esc(p.name)}</h1>
+                            <p class="text-3xl font-bold text-accent mb-6">${CONFIG.CURRENCY}${Number(p.price).toLocaleString()}</p>
+                            <p class="text-gray-400 leading-relaxed mb-8">${esc(p.description || 'No description available.')}</p>
+
+                            <div class="flex items-center gap-4 mb-6">
+                                <span class="text-sm text-gray-400">Stock:</span>
+                                ${p.stock > 0
+                                    ? `<span class="text-sm text-green-400 font-medium"><i class="fa-solid fa-circle-check mr-1"></i>${p.stock} available</span>`
+                                    : `<span class="text-sm text-red-400 font-medium"><i class="fa-solid fa-circle-xmark mr-1"></i>Out of stock</span>`
+                                }
+                            </div>
+
+                            <button onclick="addProductToCart(${p.id})" ${p.stock <= 0 ? 'disabled' : ''} class="btn-primary w-full sm:w-auto px-10 py-4 rounded-xl text-sm font-bold flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-bag-shopping"></i> ADD TO CART
+                            </button>
+
+                            <div class="mt-10 grid grid-cols-3 gap-4 border-t border-white/5 pt-8">
+                                <div class="text-center"><i class="fa-solid fa-truck text-accent mb-2"></i><p class="text-xs text-gray-500">Free Shipping 750+</p></div>
+                                <div class="text-center"><i class="fa-solid fa-shield-halved text-accent mb-2"></i><p class="text-xs text-gray-500">Secure Payment</p></div>
+                                <div class="text-center"><i class="fa-solid fa-rotate-left text-accent mb-2"></i><p class="text-xs text-gray-500">Easy Returns</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            ${renderFooter()}
+        </div>`;
+    }
+
+    function renderCartPage() {
+        const items = state.cart.items || [];
+        const subtotal = state.cart.subtotal || 0;
+        const shipping = subtotal >= CONFIG.FREE_SHIPPING_THRESHOLD ? 0 : CONFIG.SHIPPING_COST;
+        const total = subtotal + shipping;
+
+        if (items.length === 0) {
+            return `<div class="page-enter text-center py-32 max-w-md mx-auto px-4">
+                <i class="fa-solid fa-bag-shopping text-5xl text-gray-700 mb-6"></i>
+                <h2 class="text-2xl font-bold text-white mb-2">Your cart is empty</h2>
+                <p class="text-gray-500 mb-8">Looks like you haven't added anything yet.</p>
+                <a href="#shop" class="btn-primary px-8 py-3.5 rounded-xl text-sm inline-flex items-center gap-2">BROWSE PRODUCTS <i class="fa-solid fa-arrow-right"></i></a>
+            </div>`;
+        }
+
+        const itemsHTML = items.map(item => `
+            <div class="flex gap-4 py-5 border-b border-white/5">
+                <div class="w-20 h-20 rounded-xl bg-dark-700 overflow-hidden shrink-0 cursor-pointer" onclick="navigate('product','${item.product_id}')">
+                    <img src="${productImage(item)}" alt="${esc(item.name)}" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h4 class="text-white font-medium truncate cursor-pointer hover:text-accent transition-colors" onclick="navigate('product','${item.product_id}')">${esc(item.name)}</h4>
+                    <p class="text-accent font-bold mt-1">${CONFIG.CURRENCY}${Number(item.price).toLocaleString()}</p>
+                    <div class="flex items-center gap-3 mt-3">
+                        <button onclick="updateCartItem(${item.product_id}, ${item.quantity - 1})" class="qty-btn w-8 h-8 rounded-lg bg-dark-600 border border-white/10 text-white text-sm flex items-center justify-center hover:border-accent/50">-</button>
+                        <span class="text-sm text-white font-medium w-6 text-center">${item.quantity}</span>
+                        <button onclick="updateCartItem(${item.product_id}, ${item.quantity + 1})" class="qty-btn w-8 h-8 rounded-lg bg-dark-600 border border-white/10 text-white text-sm flex items-center justify-center hover:border-accent/50">+</button>
+                        <button onclick="removeCartItem(${item.product_id})" class="ml-auto text-gray-600 hover:text-red-400 transition-colors text-sm"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                </div>
+                <div class="text-right shrink-0">
+                    <p class="text-white font-bold">${CONFIG.CURRENCY}${Number(item.line_total).toLocaleString()}</p>
+                </div>
+            </div>
+        `).join('');
+
+        return `<div class="page-enter max-w-3xl mx-auto px-4 sm:px-6 py-12">
+            <h1 class="text-3xl font-black text-white mb-8">Shopping Cart</h1>
+            <div class="bg-dark-800 rounded-2xl border border-white/5 p-6">${itemsHTML}</div>
+            <div class="bg-dark-800 rounded-2xl border border-white/5 p-6 mt-4">
+                <div class="space-y-3">
+                    <div class="flex justify-between text-sm"><span class="text-gray-400">Subtotal</span><span class="text-white font-medium">${CONFIG.CURRENCY}${subtotal.toLocaleString()}</span></div>
+                    <div class="flex justify-between text-sm"><span class="text-gray-400">Shipping</span><span class="${shipping === 0 ? 'text-accent' : 'text-white'} font-medium">${shipping === 0 ? 'FREE' : CONFIG.CURRENCY + shipping}</span></div>
+                    ${subtotal < CONFIG.FREE_SHIPPING_THRESHOLD ? `<p class="text-xs text-gray-500">Spend ${CONFIG.CURRENCY}${(CONFIG.FREE_SHIPPING_THRESHOLD - subtotal).toLocaleString()} more for free shipping</p>` : ''}
+                    <div class="flex justify-between text-xl font-bold pt-4 border-t border-white/5"><span class="text-white">Total</span><span class="text-accent">${CONFIG.CURRENCY}${total.toLocaleString()}</span></div>
+                </div>
+                <button onclick="navigate('checkout')" class="btn-primary w-full py-4 rounded-xl text-sm font-bold mt-6 flex items-center justify-center gap-2">
+                    PROCEED TO CHECKOUT <i class="fa-solid fa-arrow-right"></i>
+                </button>
+                <a href="#shop" class="block text-center text-sm text-gray-500 hover:text-accent transition-colors mt-4">Continue Shopping</a>
+            </div>
+        </div>`;
+    }
+
+    function renderCheckoutPage() {
+        const items = state.cart.items || [];
+        const subtotal = state.cart.subtotal || 0;
+        const shipping = subtotal >= CONFIG.FREE_SHIPPING_THRESHOLD ? 0 : CONFIG.SHIPPING_COST;
+        const total = subtotal + shipping;
+
+        if (items.length === 0) {
+            return `<div class="text-center py-32"><p class="text-gray-400">Your cart is empty.</p><a href="#shop" class="text-accent text-sm mt-4 inline-block hover:underline">Go to Shop</a></div>`;
+        }
+
+        const itemsSummary = items.map(item => `
+            <div class="flex items-center gap-3 py-2">
+                <div class="w-10 h-10 rounded-lg bg-dark-700 overflow-hidden shrink-0"><img src="${productImage(item)}" class="w-full h-full object-cover"></div>
+                <div class="flex-1 min-w-0"><p class="text-white text-sm truncate">${esc(item.name)}</p><p class="text-gray-500 text-xs">x${item.quantity}</p></div>
+                <p class="text-white text-sm font-medium">${CONFIG.CURRENCY}${Number(item.line_total).toLocaleString()}</p>
+            </div>
+        `).join('');
+
+        return `<div class="page-enter max-w-4xl mx-auto px-4 sm:px-6 py-12">
+            <a href="#cart" class="inline-flex items-center gap-2 text-gray-400 hover:text-accent transition-colors text-sm mb-8"><i class="fa-solid fa-arrow-left"></i> Back to Cart</a>
+            <h1 class="text-3xl font-black text-white mb-10">Checkout</h1>
+
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                <div class="lg:col-span-3 space-y-6">
+                    <!-- Shipping -->
+                    <div class="bg-dark-800 rounded-2xl p-6 border border-white/5">
+                        <h3 class="text-white font-bold mb-5 flex items-center gap-2"><i class="fa-solid fa-truck text-accent"></i> Shipping Information</h3>
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <input type="text" id="co-fname" placeholder="First Name" class="w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 transition-colors">
+                                <input type="text" id="co-lname" placeholder="Last Name" class="w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 transition-colors">
+                            </div>
+                            <input type="email" id="co-email" placeholder="Email Address" class="w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 transition-colors">
+                            <input type="tel" id="co-phone" placeholder="Phone Number" class="w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 transition-colors">
+                            <input type="text" id="co-address" placeholder="Street Address" class="w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 transition-colors">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <input type="text" id="co-city" placeholder="City" class="w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 transition-colors">
+                                <input type="text" id="co-province" placeholder="Province" class="w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 transition-colors">
+                                <input type="text" id="co-postal" placeholder="Postal Code" class="w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 transition-colors">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment -->
+                    <div class="bg-dark-800 rounded-2xl p-6 border border-white/5">
+                        <h3 class="text-white font-bold mb-5 flex items-center gap-2"><i class="fa-solid fa-credit-card text-accent"></i> Payment Method</h3>
+                        <div class="space-y-3">
+                            <label class="flex items-center gap-4 p-4 rounded-xl border border-white/10 cursor-pointer hover:border-accent/30 transition-colors">
+                                <input type="radio" name="pay" value="card" checked class="accent-blue-500"><i class="fa-solid fa-credit-card text-gray-400"></i><span class="text-sm text-white">Credit / Debit Card</span>
+                            </label>
+                            <label class="flex items-center gap-4 p-4 rounded-xl border border-white/10 cursor-pointer hover:border-accent/30 transition-colors">
+                                <input type="radio" name="pay" value="eft" class="accent-blue-500"><i class="fa-solid fa-building-columns text-gray-400"></i><span class="text-sm text-white">Instant EFT</span>
+                            </label>
+                            <label class="flex items-center gap-4 p-4 rounded-xl border border-white/10 cursor-pointer hover:border-accent/30 transition-colors">
+                                <input type="radio" name="pay" value="cod" class="accent-blue-500"><i class="fa-solid fa-money-bill text-gray-400"></i><span class="text-sm text-white">Cash on Delivery</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="checkout-error" class="hidden bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 text-red-400 text-sm"></div>
+
+                    <button id="place-order-btn" onclick="handlePlaceOrder()" class="btn-primary w-full py-4 rounded-xl text-sm font-bold flex items-center justify-center gap-2">
+                        PLACE ORDER <i class="fa-solid fa-lock"></i>
+                    </button>
+                </div>
+
+                <!-- Summary -->
+                <div class="lg:col-span-2">
+                    <div class="bg-dark-800 rounded-2xl p-6 border border-white/5 sticky top-24">
+                        <h3 class="text-white font-bold mb-4">Order Summary</h3>
+                        <div class="space-y-1 max-h-52 overflow-y-auto mb-4">${itemsSummary}</div>
+                        <div class="border-t border-white/5 pt-4 space-y-2">
+                            <div class="flex justify-between text-sm"><span class="text-gray-400">Subtotal</span><span class="text-white">${CONFIG.CURRENCY}${subtotal.toLocaleString()}</span></div>
+                            <div class="flex justify-between text-sm"><span class="text-gray-400">Shipping</span><span class="${shipping === 0 ? 'text-accent' : 'text-white'}">${shipping === 0 ? 'FREE' : CONFIG.CURRENCY + shipping}</span></div>
+                            <div class="flex justify-between text-lg font-bold pt-3 border-t border-white/5"><span class="text-white">Total</span><span class="text-accent">${CONFIG.CURRENCY}${total.toLocaleString()}</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    }
+
+    function renderOrderComplete(orderId) {
+        return `<div class="page-enter text-center py-32 max-w-md mx-auto px-4">
+            <div class="w-20 h-20 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center mx-auto mb-6">
+                <i class="fa-solid fa-check text-3xl text-accent"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-white mb-2">Order Placed Successfully!</h2>
+            <p class="text-gray-400 mb-2">Thank you for shopping with Ourchieve.</p>
+            ${orderId ? `<p class="text-sm text-gray-500 mb-8">Order #${esc(orderId)}</p>` : ''}
+            <a href="#shop" class="btn-primary px-8 py-3.5 rounded-xl text-sm inline-flex items-center gap-2">CONTINUE SHOPPING <i class="fa-solid fa-arrow-right"></i></a>
+        </div>`;
+    }
+
+    function renderAboutPage() {
+        return `<div class="page-enter">
+            <section class="py-20">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                        <div>
+                            <p class="text-accent text-sm font-semibold tracking-widest uppercase mb-4">Our Story</p>
+                            <h2 class="text-3xl sm:text-4xl font-black text-white mb-6">Built for Those Who<br><span class="text-gradient">Create Their Own Path</span></h2>
+                            <p class="text-gray-400 leading-relaxed mb-6">Ourchieve was born from a simple belief: your lifestyle should reflect your ambition. We curate premium products that don't just look good -- they make a statement about who you are and where you're going.</p>
+                            <p class="text-gray-400 leading-relaxed mb-8">Every piece in our collection is chosen for quality, design, and that unmistakable edge that sets achievers apart.</p>
+                            <div class="flex gap-12">
+                                <div><p class="text-3xl font-black text-accent">2K+</p><p class="text-sm text-gray-500 mt-1">Products Sold</p></div>
+                                <div><p class="text-3xl font-black text-accent">99%</p><p class="text-sm text-gray-500 mt-1">Satisfaction</p></div>
+                                <div><p class="text-3xl font-black text-accent">24h</p><p class="text-sm text-gray-500 mt-1">Fast Shipping</p></div>
+                            </div>
+                        </div>
+                        <div class="rounded-2xl overflow-hidden glow-border">
+                            <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800&q=80" alt="About" class="w-full h-[400px] object-cover">
+                        </div>
+                    </div>
+                </div>
+            </section>
+            ${renderFooter()}
+        </div>`;
+    }
+
+    function renderContactPage() {
+        return `<div class="page-enter">
+            <section class="py-20">
+                <div class="max-w-2xl mx-auto px-4 sm:px-6 text-center">
+                    <p class="text-accent text-sm font-semibold tracking-widest uppercase mb-4">Get In Touch</p>
+                    <h2 class="text-3xl sm:text-4xl font-black text-white mb-4">Have Questions?</h2>
+                    <p class="text-gray-400 mb-10">Drop us a message and we'll get back within 24 hours.</p>
+                    <form onsubmit="handleContact(event)" class="space-y-4 text-left">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <input type="text" placeholder="Full Name" required class="w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 transition-colors">
+                            <input type="email" placeholder="Email Address" required class="w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 transition-colors">
+                        </div>
+                        <textarea placeholder="Your message..." rows="5" required class="w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 transition-colors resize-none"></textarea>
+                        <button type="submit" class="btn-primary w-full py-4 rounded-xl text-sm font-bold">SEND MESSAGE</button>
+                    </form>
+                </div>
+            </section>
+            ${renderFooter()}
+        </div>`;
+    }
+
+    function renderFooter() {
+        return `<footer class="border-t border-white/5 bg-dark-800 py-16 mt-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+                    <div>
+                        <a href="#" class="text-2xl font-black tracking-tighter"><span class="text-white">OUR</span><span class="text-accent">CHIEVE</span></a>
+                        <p class="text-gray-500 text-sm mt-4 leading-relaxed">Premium lifestyle products for those who create their own path.</p>
+                        <div class="flex gap-3 mt-6">
+                            <a href="#" class="w-9 h-9 rounded-full bg-dark-600 flex items-center justify-center text-gray-400 hover:text-accent hover:bg-dark-500 transition-all"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#" class="w-9 h-9 rounded-full bg-dark-600 flex items-center justify-center text-gray-400 hover:text-accent hover:bg-dark-500 transition-all"><i class="fa-brands fa-twitter"></i></a>
+                            <a href="#" class="w-9 h-9 rounded-full bg-dark-600 flex items-center justify-center text-gray-400 hover:text-accent hover:bg-dark-500 transition-all"><i class="fa-brands fa-tiktok"></i></a>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold text-sm mb-4">Quick Links</h4>
+                        <ul class="space-y-3 text-sm text-gray-500">
+                            <li><a href="#shop" class="hover:text-accent transition-colors">Shop All</a></li>
+                            <li><a href="#about" class="hover:text-accent transition-colors">About Us</a></li>
+                            <li><a href="#contact" class="hover:text-accent transition-colors">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold text-sm mb-4">Policies</h4>
+                        <ul class="space-y-3 text-sm text-gray-500">
+                            <li><a href="#" class="hover:text-accent transition-colors">Shipping Policy</a></li>
+                            <li><a href="#" class="hover:text-accent transition-colors">Returns & Refunds</a></li>
+                            <li><a href="#" class="hover:text-accent transition-colors">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold text-sm mb-4">Newsletter</h4>
+                        <p class="text-gray-500 text-sm mb-4">Subscribe for drops and exclusives.</p>
+                        <form onsubmit="handleNewsletter(event)" class="flex gap-2">
+                            <input type="email" placeholder="your@email.com" required class="flex-1 bg-dark-700 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent/50">
+                            <button type="submit" class="btn-primary px-4 py-2.5 rounded-lg text-sm"><i class="fa-solid fa-paper-plane"></i></button>
+                        </form>
+                    </div>
+                </div>
+                <div class="border-t border-white/5 mt-12 pt-8 text-center">
+                    <p class="text-gray-600 text-xs">&copy; 2026 Ourchieve.co.za. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>`;
+    }
+
+    // ========================================
+    // CHECKOUT HANDLER
+    // ========================================
+    async function handlePlaceOrder() {
+        const btn = document.getElementById('place-order-btn');
+        const errDiv = document.getElementById('checkout-error');
+        errDiv.classList.add('hidden');
+
+        const fname = document.getElementById('co-fname').value.trim();
+        const lname = document.getElementById('co-lname').value.trim();
+        const email = document.getElementById('co-email').value.trim();
+        const phone = document.getElementById('co-phone').value.trim();
+        const address = document.getElementById('co-address').value.trim();
+        const city = document.getElementById('co-city').value.trim();
+        const province = document.getElementById('co-province').value.trim();
+        const postal = document.getElementById('co-postal').value.trim();
+
+        if (!fname || !lname || !email || !phone || !address || !city) {
+            errDiv.textContent = 'Please fill in all required fields.';
+            errDiv.classList.remove('hidden');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Processing...';
+
+        const fullName = fname + ' ' + lname;
+        const fullAddress = [address, city, province, postal].filter(Boolean).join(', ');
+
+        try {
+            // Use the direct order endpoint
+            const orderData = {
+                name: fullName,
+                email: email,
+                phone: phone,
+                total: state.cart.subtotal + (state.cart.subtotal >= CONFIG.FREE_SHIPPING_THRESHOLD ? 0 : CONFIG.SHIPPING_COST),
+                items: state.cart.items.map(i => ({ product_id: i.product_id, name: i.name, quantity: i.quantity, price: i.price }))
+            };
+
+            const res = await api.placeOrder(orderData);
+
+            if (res.success) {
+                // Clear local cart
+                localStorage.removeItem('ourchieve_cart_id');
+                state.cart = { cart_id: null, items: [], item_count: 0, subtotal: 0 };
+                updateCartBadge();
+                navigate('order-complete', '');
+            } else {
+                throw new Error(res.error || 'Order failed');
+            }
+        } catch (e) {
+            errDiv.textContent = e.message || 'Something went wrong. Please try again.';
+            errDiv.classList.remove('hidden');
+            btn.disabled = false;
+            btn.innerHTML = 'PLACE ORDER <i class="fa-solid fa-lock"></i>';
+        }
+    }
+
+    // ========================================
+    // SEARCH
+    // ========================================
+    let searchTimeout;
+    function toggleSearch() {
+        const bar = document.getElementById('search-bar');
+        bar.classList.toggle('hidden');
+        if (!bar.classList.contains('hidden')) document.getElementById('search-input').focus();
+    }
+
+    function handleSearch(e) {
+        clearTimeout(searchTimeout);
+        const q = e.target.value.trim();
+        const resultsDiv = document.getElementById('search-results');
+
+        if (q.length < 2) { resultsDiv.classList.add('hidden'); return; }
+
+        searchTimeout = setTimeout(async () => {
+            const res = await api.searchProducts(q);
+            if (res.success && res.data.length > 0) {
+                resultsDiv.innerHTML = res.data.slice(0, 5).map(p => `
+                    <a href="#product/${p.id}" onclick="toggleSearch()" class="flex items-center gap-3 p-3 rounded-lg hover:bg-dark-600 transition-colors">
+                        <img src="${productImage(p)}" class="w-10 h-10 rounded-lg object-cover bg-dark-700">
+                        <div class="flex-1 min-w-0"><p class="text-white text-sm font-medium truncate">${esc(p.name)}</p><p class="text-accent text-xs">${CONFIG.CURRENCY}${Number(p.price).toLocaleString()}</p></div>
+                    </a>
+                `).join('');
+                resultsDiv.classList.remove('hidden');
+            } else {
+                resultsDiv.innerHTML = '<p class="text-gray-500 text-sm p-3">No results found</p>';
+                resultsDiv.classList.remove('hidden');
+            }
+        }, 300);
+    }
+
+    // ========================================
+    // UTILITIES
+    // ========================================
+    function esc(str) {
+        const d = document.createElement('div');
+        d.textContent = str || '';
+        return d.innerHTML;
+    }
+
+    function toggleMobileMenu() {
+        document.getElementById('mobile-menu').classList.toggle('hidden');
+    }
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        document.getElementById('toast-msg').textContent = msg;
+        t.style.transform = 'translateY(0)';
+        t.style.opacity = '1';
+        setTimeout(() => { t.style.transform = 'translateY(80px)'; t.style.opacity = '0'; }, 3000);
+    }
+
+    function handleContact(e) {
+        e.preventDefault();
+        showToast('Message sent! We\'ll respond within 24 hours.');
+        e.target.reset();
+    }
+
+    function handleNewsletter(e) {
+        e.preventDefault();
+        showToast('Subscribed! Welcome to Ourchieve.');
+        e.target.reset();
+    }
+
+    // ========================================
+    // INIT
+    // ========================================
+    async function init() {
+        await refreshCart();
+        renderCurrentRoute();
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+    </script>
 
 </body>
-
 </html>
